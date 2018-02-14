@@ -1,11 +1,8 @@
 Relay Core 1.0.1
 =============================
-fork of bitcoin-core 0.13.2
+
 What is Relay?
 -------------
-
-Relay is the implementation of the Zerocoin protocol ( http://zerocoin.org ) guaranteeing true financial anonymity.
-
 
 Relay is a decentralized digital currency that is built on top of bitcoin core 0.13.2, with added features and functionality. Relay was created to make day to day payments easy, low cost, and private if needed.
 
