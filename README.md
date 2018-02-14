@@ -28,10 +28,9 @@ With Relay's dual-blockchain technology, you get the option to choose private tr
 
 | Specification | Value |
 |:-----------|:-----------|
-| addanonserver | `95.183.52.55:3000` |
-| addanonserver | `95.183.53.184:3000` |
-| addanonserver | `95.183.52.28:3000` |
-| addanonserver | `95.183.52.29:3000` |
+| anonServer | `N/A` |
+| anonServer | `N/A` |
+
 
 For more information, as well as an immediately useable, binary version of
 the relay client sofware, see https://github.com/relayofficial/relay/releases.
