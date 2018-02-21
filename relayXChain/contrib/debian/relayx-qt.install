@@ -1,0 +1,5 @@
+relayx-qt usr/bin
+share/pixmaps/bitcoin32.xpm usr/share/pixmaps
+share/pixmaps/bitcoin80.xpm usr/share/pixmaps
+debian/relayx-qt.desktop usr/share/applications
+debian/relayx-qt.protocol usr/share/kde4/services/

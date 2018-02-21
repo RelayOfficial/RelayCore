@@ -1,0 +1,2 @@
+debian/bin/relayxd usr/bin
+src/relayd usr/lib/relayx
