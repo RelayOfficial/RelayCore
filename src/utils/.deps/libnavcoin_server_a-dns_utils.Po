@@ -1,0 +1,1 @@
+utils/libnavcoin_server_a-dns_utils.o: utils/dns_utils.cpp
