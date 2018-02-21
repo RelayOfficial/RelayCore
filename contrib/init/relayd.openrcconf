@@ -1,0 +1,33 @@
+# /etc/conf.d/relayd: config file for /etc/init.d/relayd
+
+# Config file location
+#RELAYD_CONFIGFILE="/etc/relay/relay.conf"
+
+# What directory to write pidfile to?  (created and owned by $RELAYD_USER)
+#RELAYD_PIDDIR="/var/run/relayd"
+
+# What filename to give the pidfile
+#RELAYD_PIDFILE="${RELAYD_PIDDIR}/relayd.pid"
+
+# Where to write relayd data (be mindful that the blockchain is large)
+#RELAYD_DATADIR="/var/lib/relayd"
+
+# User and group to own relayd process
+#RELAYD_USER="relay"
+#RELAYD_GROUP="relay"
+
+# Path to relayd executable
+#RELAYD_BIN="/usr/bin/relayd"
+
+# Nice value to run relayd under
+#RELAYD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+RELAYD_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for relayd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+RELAYD_SIGTERM_TIMEOUT=60

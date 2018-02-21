@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/relay/.relay" ]; then
+	RELAYD_DEFAULT_DATADIR="/var/lib/relay/.relay"
+else
+	RELAYD_DEFAULT_DATADIR="/var/lib/relayd"
+fi
+
+RELAYD_CONFIGFILE=${RELAYD_CONFIGFILE:-/etc/relay/relay.conf}
+RELAYD_PIDDIR=${RELAYD_PIDDIR:-/var/run/relayd}
+RELAYD_PIDFILE=${RELAYD_PIDFILE:-${RELAYD_PIDDIR}/relayd.pid}
+RELAYD_DATADIR=${RELAYD_DATADIR:-${RELAYD_DEFAULT_DATADIR}}
+RELAYD_USER=${RELAYD_USER:-${RELAY_USER:-relay}}
+RELAYD_GROUP=${RELAYD_GROUP:-relay}
+RELAYD_BIN=${RELAYD_BIN:-/usr/bin/relayd}
+RELAYD_NICE=${RELAYD_NICE:-${NICELEVEL:-0}}
+RELAYD_OPTS="${RELAYD_OPTS:-${RELAY_OPTS}}"
+
+name="Relay Core Daemon"
+description="Relay cryptocurrency P2P network daemon"
+
+command="/usr/bin/relayd"
+command_args="-pid=\"${RELAYD_PIDFILE}\" \
+		-conf=\"${RELAYD_CONFIGFILE}\" \
+		-datadir=\"${RELAYD_DATADIR}\" \
+		-daemon \
+		${RELAYD_OPTS}"
+
+required_files="${RELAYD_CONFIGFILE}"
+start_stop_daemon_args="-u ${RELAYD_USER} \
+			-N ${RELAYD_NICE} -w 2000"
+pidfile="${RELAYD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${RELAYD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${RELAYD_USER}:${RELAYD_GROUP}" \
+	"${RELAYD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${RELAYD_USER}:${RELAYD_GROUP}" \
+	"${RELAYD_PIDDIR}"
+
+	checkpath -f \
+	-o ${RELAYD_USER}:${RELAYD_GROUP} \
+	-m 0660 \
+	${RELAYD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${RELAYD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run relayd."
+		eerror "The setting must appear in ${RELAYD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is also recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Relay Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}
