@@ -7,23 +7,23 @@ define(_CLIENT_VERSION_BUILD, 0)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2017)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
-define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[NavCoin Core]])
-AC_INIT([NavCoin Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/relay/relay-core/issues],[relay],[https://relay.org/])
+define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Relay Core]])
+AC_INIT([Relay Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[https://github.com/relay/relay-core/issues],[relay],[https://relay.org/])
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([src/config/relay-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
-NAVCOIN_DAEMON_NAME=relayd
-NAVCOIN_GUI_NAME=relay-qt
-NAVCOIN_CLI_NAME=relay-cli
-NAVCOIN_TX_NAME=relay-tx
+RELAY_DAEMON_NAME=relayd
+RELAY_GUI_NAME=relay-qt
+RELAY_CLI_NAME=relay-cli
+RELAY_TX_NAME=relay-tx
 
 AC_CANONICAL_HOST
 
-AH_TOP([#ifndef NAVCOIN_CONFIG_H])
-AH_TOP([#define NAVCOIN_CONFIG_H])
-AH_BOTTOM([#endif //NAVCOIN_CONFIG_H])
+AH_TOP([#ifndef RELAY_CONFIG_H])
+AH_TOP([#define RELAY_CONFIG_H])
+AH_BOTTOM([#endif //RELAY_CONFIG_H])
 
 dnl faketime breaks configure and is only needed for make. Disable it here.
 unset FAKETIME
@@ -578,7 +578,7 @@ AC_SUBST(LIBMEMENV)
 
 if test x$enable_wallet != xno; then
     dnl Check for libdb_cxx only if wallet enabled
-    NAVCOIN_FIND_BDB48
+    RELAY_FIND_BDB48
 fi
 
 dnl Check for libminiupnpc (optional)
@@ -590,10 +590,10 @@ if test x$use_upnp != xno; then
   )
 fi
 
-NAVCOIN_QT_INIT
+RELAY_QT_INIT
 
 dnl sets $relay_enable_qt, $relay_enable_qt_test, $relay_enable_qt_dbus
-NAVCOIN_QT_CONFIGURE([$use_pkgconfig], [qt5])
+RELAY_QT_CONFIGURE([$use_pkgconfig], [qt5])
 
 if test x$build_relay_utils$build_relayd$relay_enable_qt$use_tests$use_bench = xnonononono; then
     use_boost=no
@@ -772,9 +772,9 @@ if test x$use_pkgconfig = xyes; then
       PKG_CHECK_MODULES([UNBOUND], [libunbound], [have_unbound=yes], [have_unbound=no])
       PKG_CHECK_MODULES([CURL], [libcurl],, [AC_MSG_ERROR(libcurl  not found.)])
       PKG_CHECK_MODULES([CRYPTO], [libcrypto],,[AC_MSG_ERROR(libcrypto  not found.)])
-      NAVCOIN_QT_CHECK([PKG_CHECK_MODULES([PROTOBUF], [protobuf], [have_protobuf=yes], [NAVCOIN_QT_FAIL(libprotobuf not found)])])
+      RELAY_QT_CHECK([PKG_CHECK_MODULES([PROTOBUF], [protobuf], [have_protobuf=yes], [RELAY_QT_FAIL(libprotobuf not found)])])
       if test x$use_qr != xno; then
-        NAVCOIN_QT_CHECK([PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])])
+        RELAY_QT_CHECK([PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])])
       fi
       if test x$build_relay_utils$build_relayd$relay_enable_qt$use_tests != xnononono; then
         PKG_CHECK_MODULES([EVENT], [libevent],, [AC_MSG_ERROR(libevent not found.)])
@@ -827,10 +827,10 @@ else
     AC_DEFINE_UNQUOTED([ENABLE_ZMQ],[0],[Define to 1 to enable ZMQ functions])
   fi
 
-  NAVCOIN_QT_CHECK(AC_CHECK_LIB([protobuf] ,[main],[PROTOBUF_LIBS=-lprotobuf], NAVCOIN_QT_FAIL(libprotobuf not found)))
+  RELAY_QT_CHECK(AC_CHECK_LIB([protobuf] ,[main],[PROTOBUF_LIBS=-lprotobuf], RELAY_QT_FAIL(libprotobuf not found)))
   if test x$use_qr != xno; then
-    NAVCOIN_QT_CHECK([AC_CHECK_LIB([qrencode], [main],[QR_LIBS=-lqrencode], [have_qrencode=no])])
-    NAVCOIN_QT_CHECK([AC_CHECK_HEADER([qrencode.h],, have_qrencode=no)])
+    RELAY_QT_CHECK([AC_CHECK_LIB([qrencode], [main],[QR_LIBS=-lqrencode], [have_qrencode=no])])
+    RELAY_QT_CHECK([AC_CHECK_HEADER([qrencode.h],, have_qrencode=no)])
   fi
 fi
 
@@ -880,18 +880,18 @@ AC_CHECK_HEADER([openssl/ec.h],, AC_MSG_ERROR(OpenSSL ec header missing),)
 CXXFLAGS="$CXXFLAGS_TEMP"
 LIBS="$LIBS_TEMP"
 
-NAVCOIN_QT_PATH_PROGS([PROTOC], [protoc],$protoc_bin_path)
+RELAY_QT_PATH_PROGS([PROTOC], [protoc],$protoc_bin_path)
 
 AC_MSG_CHECKING([whether to build relayd])
-AM_CONDITIONAL([BUILD_NAVCOIND], [test x$build_relayd = xyes])
+AM_CONDITIONAL([BUILD_RELAYD], [test x$build_relayd = xyes])
 AC_MSG_RESULT($build_relayd)
 
 AC_MSG_CHECKING([whether to build utils (relay-cli relay-tx)])
-AM_CONDITIONAL([BUILD_NAVCOIN_UTILS], [test x$build_relay_utils = xyes])
+AM_CONDITIONAL([BUILD_RELAY_UTILS], [test x$build_relay_utils = xyes])
 AC_MSG_RESULT($build_relay_utils)
 
 AC_MSG_CHECKING([whether to build libraries])
-AM_CONDITIONAL([BUILD_NAVCOIN_LIBS], [test x$build_relay_libs = xyes])
+AM_CONDITIONAL([BUILD_RELAY_LIBS], [test x$build_relay_libs = xyes])
 if test x$build_relay_libs = xyes; then
   AC_DEFINE(HAVE_CONSENSUS_LIB, 1, [Define this symbol if the consensus lib has been built])
   AC_CONFIG_FILES([librelayconsensus.pc:librelayconsensus.pc.in])
@@ -1053,10 +1053,10 @@ AC_SUBST(COPYRIGHT_YEAR, _COPYRIGHT_YEAR)
 AC_SUBST(COPYRIGHT_HOLDERS, "_COPYRIGHT_HOLDERS")
 AC_SUBST(COPYRIGHT_HOLDERS_SUBSTITUTION, "_COPYRIGHT_HOLDERS_SUBSTITUTION")
 AC_SUBST(COPYRIGHT_HOLDERS_FINAL, "_COPYRIGHT_HOLDERS_FINAL")
-AC_SUBST(NAVCOIN_DAEMON_NAME)
-AC_SUBST(NAVCOIN_GUI_NAME)
-AC_SUBST(NAVCOIN_CLI_NAME)
-AC_SUBST(NAVCOIN_TX_NAME)
+AC_SUBST(RELAY_DAEMON_NAME)
+AC_SUBST(RELAY_GUI_NAME)
+AC_SUBST(RELAY_CLI_NAME)
+AC_SUBST(RELAY_TX_NAME)
 
 AC_SUBST(RELDFLAGS)
 AC_SUBST(HARDENED_CXXFLAGS)
