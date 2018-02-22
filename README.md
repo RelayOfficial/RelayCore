@@ -15,21 +15,14 @@ With Relay's dual-blockchain technology, you get the option to choose private tr
 | Specification | Value |
 |:-----------|:-----------|
 | Block Time | `10 seconds` |
-| Stake Minimum Age | `2 hours` |
+| Stake Minimum Age | `4 hours` |
 | Stake Maximum Age | `24 hours` |
 | Stake Reward | `25% per annum` |
 
 | RPC Specification | Value |
 |:-----------|:-----------|
-| Port | `26090` |
-| RPC Port | `26090` |
-
-## RelayX Settings
-
-| Specification | Value |
-|:-----------|:-----------|
-| anonServer | `N/A` |
-| anonServer | `N/A` |
+| Port | `45569` |
+| RPC Port | `45569` |
 
 
 For more information, as well as an immediately useable, binary version of

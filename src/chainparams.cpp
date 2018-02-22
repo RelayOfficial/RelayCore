@@ -89,13 +89,13 @@ public:
         consensus.BIP34Height = 900000;
         consensus.BIP34Hash = uint256S("0xecb7444214d068028ec1fa4561662433452c1cbbd6b0f8eeb6452bcfa1d0a7d6");
         consensus.powLimit = ArithToUint256(~arith_uint256(0) >> 16);
-        consensus.nPowTargetTimespan = 30;
-        consensus.nPowTargetSpacing = 30;
+        consensus.nPowTargetTimespan = 10;
+        consensus.nPowTargetSpacing = 10;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 15120; // 75% of 20160
         consensus.nMinerConfirmationWindow = 20160;
-        consensus.nStakeMinAge = 60 * 60 * 2;	// minimum for coin age: 2 hours
+        consensus.nStakeMinAge = 60 * 60 * 4;	// minimum for coin age: 2 hours
         consensus.nTargetSpacing = 10; // Blocktime: 30 secs
         consensus.nStakeCombineThreshold = 1000 * COIN;
         consensus.nStakeSplitThreshold = 2 * consensus.nStakeCombineThreshold;
@@ -171,11 +171,7 @@ public:
         vFixedSeeds.clear();
       	vSeeds.clear();
 
-        //vSeeds.push_back(CDNSSeedData("supernode.navcoin.org", "95.183.51.56"));
-        //vSeeds.push_back(CDNSSeedData("navtech1.navcoin.org", "95.183.52.55"));
-        //vSeeds.push_back(CDNSSeedData("navtech2.navcoin.org", "95.183.52.28"));
-        //vSeeds.push_back(CDNSSeedData("navtech3.navcoin.org", "95.183.52.29"));
-        //vSeeds.push_back(CDNSSeedData("navtech4.navcoin.org", "95.183.53.184"));
+        vSeeds.push_back(CDNSSeedData("159.89.40.110", "159.89.40.110"));
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
