@@ -117,9 +117,4 @@ Windows (64/32 bit) Build Instructions and Notes
 See (doc/build-windows.md) for instructions on building on Windows 64/32 bit.
 
 
-https://relay.org/project-roadmap/
-
-
-
-
-Soon | Bitcointalk | https://bitcointalk.org/index.php?topic= |
+https://relayofficial.org/#roadmap/
